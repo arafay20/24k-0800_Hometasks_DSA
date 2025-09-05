@@ -1,0 +1,86 @@
+#include<iostream>
+
+using namespace std;
+
+class Researchpaper {
+	
+	string *name;
+	int count;
+	
+	public :
+		Researchpaper(int c=0, string *list = nullptr) {
+			count = c;
+			
+			if(count> 0 && list!=nullptr){
+					name = new string[count];
+					
+					for(int i = 0 ;i <count; i++){
+						name[i]=list[i];
+					}
+			}else {
+				name = nullptr;
+			}
+		}
+		
+		Researchpaper(const Researchpaper &obj){
+			count = obj.count;
+			if(count > 0){
+				name = new string[count];
+				for(int i = 0 ; i <count ;i ++){
+					name[i]= obj.name[i];
+				}
+			}
+			else {
+				name =nullptr;
+			}
+		}
+		
+		Researchpaper &operator =(const Researchpaper &obj){
+			count = obj.count;
+			if(count > 0){
+				name = new string[count];
+				for(int i = 0 ; i <count ;i ++){
+					name[i]= obj.name[i];
+				}
+			}
+			else {
+				name =nullptr;
+		}
+		return *this;
+		}
+		
+		~Researchpaper(){
+			delete [] name;
+		}
+		
+		void showname(){
+			cout << endl;.
+			for(int i = 0 ; i <count; i ++){
+				cout << i+1 << " : " << name[i] << endl;
+			}
+		}
+};
+
+int main () {
+	
+	string authors1[] = {"rafay", "talha", "irfan"};
+    Researchpaper paper1(3, authors1);
+
+    cout << "Original Paper 1: ";
+    paper1.showname();
+
+    Researchpaper paper2 = paper1;
+    cout << "Copied Paper 2 (via copy constructor): ";
+    paper2.showname();
+
+    string authors2[] = {"rameel", "abdullah"};
+    Researchpaper paper3(2, authors2);
+    cout << "Original Paper 3 before assignment: ";
+    paper3.showname();
+
+    paper3 = paper1;
+    cout << "Paper 3 after assignment from Paper 1: ";
+    paper3.showname();
+	
+	return 0;
+}
