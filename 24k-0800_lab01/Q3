@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+class Exam {
+    int *marks;   
+
+public:
+   
+    Exam(int m) {
+        marks = new int(m);  
+    }
+
+   
+
+  
+    void setMarks(int m) {
+        *marks = m;
+    }
+
+   
+    void show() {
+        cout << "Marks: " << *marks << endl;
+    }
+
+   
+    ~Exam() {
+        delete marks;
+    }
+};
+
+int main() {
+
+    Exam e1(90);
+    cout << "Original e1: ";
+    e1.show();
+
+    Exam e2 = e1;   
+    cout << "Copied e2: ";
+    e2.show();
+
+ 
+    e2.setMarks(50);
+
+    cout << "\nAfter changing e2:\n";
+    e1.show();   
+    e2.show();
+
+    return 0;
+}
