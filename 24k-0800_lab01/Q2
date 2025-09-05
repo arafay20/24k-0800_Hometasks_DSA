@@ -1,0 +1,59 @@
+#include<iostream>
+using namespace std;
+
+class box {
+	
+	int *volume ;
+	
+	public :
+		box(){
+			volume = nullptr;
+		}
+		box (int v){
+		
+		volume = new int(v);
+		}
+		
+		box(const box &obj){
+			
+			volume = new int(*obj.volume);
+		}
+		
+		void changevol(int v) {
+			
+			*volume = v;
+		}
+		
+		~box(){
+			delete volume;
+		}
+		
+		void show(){
+			
+			if(volume !=nullptr) {
+				cout << "box volume : " << *volume << endl;
+			}else  {
+				cout << "box volume = empty" << endl;
+			}
+		}
+}; 
+
+int main (){
+	box b1;
+	
+	box b2(10);
+	
+	box b3(b2);
+	cout << " output after implementing deep copy " << endl;
+	b1.show();
+	b2.show();
+	b3.show();
+	
+	b3.changevol(16);
+	
+	cout << "output after  changing value" <<  endl;
+	b2.show();
+	b3.show();
+	
+	return 0; 
+	}
