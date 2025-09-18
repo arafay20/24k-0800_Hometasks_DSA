@@ -1,0 +1,183 @@
+#include <iostream>
+using namespace std;
+
+class node {
+public:
+    int id;
+    string name;
+    string ride;
+    node* next;
+
+    node(string n = "0", int i = 0, string r = "0")
+        : id(i), name(n), ride(r), next(nullptr) {}
+};
+
+class amusement {
+    node* head;
+    node* tail;
+
+public:
+    amusement() : head(nullptr), tail(nullptr) {}
+
+
+    void issueatend(string n, int i, string r) {
+        node* temp = new node(n, i, r);
+        if (!head) {
+            head = tail = temp;
+            tail->next = head;
+        } else {
+            tail->next = temp;
+            temp->next = head;
+            tail = temp;
+        }
+        cout << "Ticket issued at end: " << i << endl;
+    }
+
+    // Issue priority ticket at front
+    void issueatfront(string n, int i, string r) {
+        node* temp = new node(n, i, r);
+        if (!head) {
+            head = tail = temp;
+            tail->next = head;
+        } else {
+            temp->next = head;
+            head = temp;
+            tail->next = head;
+        }
+        cout << "Priority ticket issued: " << i << endl;
+    }
+
+
+    void cancelticket(int i) {
+        if (!head) {
+            cout << "No tickets booked.\n";
+            return;
+        }
+
+        node* curr = head;
+        node* prev = tail;
+        do {
+            if (curr->id == i) {
+                if (curr == head && curr == tail) {
+                 
+                    delete curr;
+                    head = tail = nullptr;
+                } else if (curr == head) {
+                    head = head->next;
+                    tail->next = head;
+                    delete curr;
+                } else if (curr == tail) {
+                    tail = prev;
+                    tail->next = head;
+                    delete curr;
+                } else {
+                    prev->next = curr->next;
+                    delete curr;
+                }
+                cout << "Ticket " << i << " canceled.\n";
+                return;
+            }
+            prev = curr;
+            curr = curr->next;
+        } while (curr != head);
+
+        cout << "Ticket ID " << i << " not found.\n";
+    }
+
+    
+    void cancelfirstticket() {
+        if (!head) {
+            cout << "No tickets booked.\n";
+            return;
+        }
+        cancelticket(head->id);
+    }
+
+
+    void searchbyid(int i) {
+        if (!head) {
+            cout << "No tickets booked.\n";
+            return;
+        }
+        node* temp = head;
+        do {
+            if (temp->id == i) {
+                cout << "Ticket found -> ID: " << temp->id
+                     << ", Name: " << temp->name
+                     << ", Ride: " << temp->ride << endl;
+                return;
+            }
+            temp = temp->next;
+        } while (temp != head);
+        cout << "Ticket ID " << i << " not found.\n";
+    }
+
+   
+    void displayt() {
+        if (!head) {
+            cout << "No tickets booked.\n";
+            return;
+        }
+        node* temp = head;
+        cout << "Tickets in circular order:\n";
+        do {
+            cout << "[ID: " << temp->id << ", Name: " << temp->name << ", Ride: " << temp->ride << "] -> ";
+            temp = temp->next;
+        } while (temp != head);
+        cout << "(back to head)\n";
+    }
+
+    void countitems() {
+        if (!head) {
+            cout << "No tickets booked.\n";
+            return;
+        }
+        int count = 0;
+        node* temp = head;
+        do {
+            count++;
+            temp = temp->next;
+        } while (temp != head);
+        cout << "Total tickets booked: " << count << endl;
+    }
+
+    
+    void searchnextbyid(int i) {
+        if (!head) {
+            cout << "No tickets booked.\n";
+            return;
+        }
+        node* temp = head;
+        do {
+            if (temp->id == i) {
+                node* nxt = temp->next;
+                cout << "Next ticket -> ID: " << nxt->id << ", Name: " << nxt->name << ", Ride: " << nxt->ride << endl;
+                return;
+            }
+            temp = temp->next;
+        } while (temp != head);
+        cout << "Ticket ID " << i << " not found.\n";
+    }
+};
+
+int main() {
+    amusement park;
+
+    park.issueatend("Alice", 101, "Roller Coaster");
+    park.issueatend("Bob", 102, "Ferris Wheel");
+    park.issueatfront("VIP_John", 100, "Haunted House");
+
+    park.displayt();
+    park.countitems();
+
+    park.searchbyid(102);
+    park.searchnextbyid(101);
+
+    park.cancelfirstticket();
+    park.cancelticket(102);
+
+    park.displayt();
+    park.countitems();
+
+    return 0;
+}
