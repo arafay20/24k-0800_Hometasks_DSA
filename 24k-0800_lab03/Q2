@@ -1,0 +1,115 @@
+#include <iostream>
+using namespace std;
+
+class node {
+public:
+    int price;
+    string data;
+    node* next;
+
+    node(string d = "0", int p = 0) : price(p), data(d), next(nullptr) {}
+};
+
+class shoppinglist {
+    node* head;
+
+public:
+    shoppinglist() : head(nullptr) {}
+
+    void addatstart(string d, int p) {
+        node* temp = new node(d, p);
+        temp->next = head;
+        head = temp;
+    }
+
+    void insertatend(string d, int p) {
+        node* temp = new node(d, p);
+        if (head == nullptr) {
+            head = temp;
+            return;
+        }
+        node* curr = head;
+        while (curr->next != nullptr) {
+            curr = curr->next;
+        }
+        curr->next = temp;
+    }
+
+    void insertafter(string key, string d, int p) {
+        node* curr = head;
+        while (curr != nullptr && curr->data != key) {
+            curr = curr->next;
+        }
+        if (curr == nullptr) {
+            cout << "Item " << key << " not found in list!" << endl;
+            return;
+        }
+        node* temp = new node(d, p);
+        temp->next = curr->next;
+        curr->next = temp;
+    }
+
+    void searchbyname(string d) {
+        node* temp = head;
+        while (temp != nullptr) {
+            if (temp->data == d) {
+            	
+                cout << "Item : " << temp->data << "  | price: $ " << temp->price << endl;
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "item not found in the list" << endl;
+    }
+    
+    void searchbypos(int pos){
+    	node *temp = head;
+    	
+    	for(int i = 0; i < pos && temp!=nullptr ; i++) {
+    		temp=temp->next;
+		}
+		
+		if(temp == nullptr) {
+			cout << "item not found" <<  endl;
+			return;
+		}
+		
+		cout << "item name : " << temp->data << " | price: $" << temp->price << endl;
+	}
+	
+	void deletefromfront(){
+		
+		node *temp =head;
+		
+		temp = head->next;
+		delete head;
+		head = temp;
+	}
+
+    void display() {
+        node* temp = head;
+        while (temp != nullptr) {
+            cout << "Item: " << temp->data << " | Price: $" << temp->price << endl;
+            temp = temp->next;
+        }
+    }
+};
+
+int main() {
+    shoppinglist l1;
+
+    l1.addatstart("Headphones", 150);
+    l1.addatstart("Tablet", 400);
+    l1.addatstart("Phone", 700);
+    l1.addatstart("Laptop", 1000);
+
+    l1.insertatend("charger" , 10);
+    l1.deletefromfront();
+    l1.searchbyname("Phone");
+    l1.searchbypos(2);
+
+    cout << "\nShopping Cart Items:" << endl;
+    l1.display();
+
+    return 0;
+}
