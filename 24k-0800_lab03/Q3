@@ -1,0 +1,185 @@
+#include<iostream>
+
+using namespace std;
+
+class node {
+	
+	public :
+		node *prev;
+		node *next;
+		int id;
+		string name;
+		int price;
+		
+		node(string n = "0", int i = 0, int p = 0) : id(i), name(n), price(p), next(nullptr), prev(nullptr){
+		}
+		
+		
+};
+
+class ecom {
+	
+	node *head;
+	node *tail;
+	
+	public :
+		ecom () : head(nullptr), tail(nullptr) {
+		}
+		
+		void insertatend(int i, string n, int p){
+			node *temp = new node(n,i,p);
+			
+			if(tail==nullptr){
+				tail = temp;
+				head = temp;
+			}else {
+				tail->next = temp;
+				temp->prev = tail;
+				tail = temp;
+			}
+		}
+		
+		void insertatfront(int i,string n, int p){
+		node *temp = new node(n,i,p);
+			
+			if(head==nullptr){
+				tail = temp;
+				head = temp;
+			}else {
+				temp->next = head;
+				head->prev = temp;
+				head =temp;
+			}
+		}
+		
+		void removefromfirst(){
+			node *temp =head;
+			node *curr =head;
+			
+			curr =temp->next;
+			delete temp;
+			head = curr;
+		}
+		
+      void removefromlast() {
+         if (!tail) {
+        cout << "Cart is empty.\n";
+        return;
+        }
+
+        node* temp = tail;
+
+        if (head == tail) {
+       
+        head = tail = nullptr;
+       } else {
+      
+        tail = tail->prev;
+        tail->next = nullptr;
+        }
+
+        delete temp;
+        }
+
+		
+		void searchbyid(int i){
+		node* temp = head;
+        while (temp != nullptr) {
+            if (temp->id == i) {
+            	
+                cout << "Item id : " << temp->id << " |name : " << temp->name <<  "  | price: $ " << temp->price << endl;
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "item not found in the list" << endl;
+		}
+		
+		void updatebyid(int i, int p){
+		node* temp = head;
+        while (temp != nullptr) {
+            if (temp->id == i) {
+            	temp->price = p;
+            	cout << "price updated" << endl;
+                return;
+            }
+            temp = temp->next;
+        }
+        cout << "item not found in the list" << endl;
+	    }
+	    
+	    void displayfromfront() {
+        node* temp = head;
+        while (temp != nullptr) {
+          cout << "Item id : " << temp->id << " |name : " << temp->name <<  "  | price: $ " << temp->price << endl;
+            temp = temp->next;
+           }
+        }
+        
+        void displayfromend() {
+        node* temp = tail;
+        while (temp != nullptr) {
+          cout << "Item id : " << temp->id << " |name : " << temp->name <<  "  | price: $ " << temp->price << endl;
+            temp = temp->prev;
+           }
+        }
+        
+        int countitems(){
+        	
+        	int count = 0;
+        	node *temp = head;
+        	while(temp!=nullptr){
+        		count++;
+        		temp = temp->next;
+			}
+			
+			return count;
+		}
+		
+		void searchexpensive(){
+			node *temp = head;
+			int p = 0;
+			while(temp!=nullptr) {
+			if(p < temp->price){
+				p = temp->price;
+			}
+			temp = temp->next;	
+			}
+			temp =head;
+			while(temp!=nullptr){
+				if(p == temp->price){
+			      cout << "Item id : " << temp->id << " |name : " << temp->name <<  "  | price: $ " << temp->price << endl;
+				}
+				temp =temp->next;
+			}
+		}
+};
+int  main (){
+	ecom cart;
+
+    cart.insertatend(101, "Laptop", 1000);
+    cart.insertatend(102, "Phone", 700);
+    cart.insertatfront(100, "Charger", 50);
+    cart.insertatend(103, "Tablet", 400);
+
+    cout << "Cart (front to end):\n";
+    cart.displayfromfront();
+
+    cout << "\nCart (end to front):\n";
+    cart.displayfromend();
+
+    cout << "\nTotal items: " << cart.countitems() << "\n";
+
+    cart.searchbyid(102);
+    cart.updatebyid(103, 450);
+    cart.searchexpensive();
+
+    cout << "\nRemoving first and last...\n";
+    cart.removefromfirst();
+    cart.removefromlast();
+
+    cout << "\nCart after removals:\n";
+    cart.displayfromfront();
+	
+	return 0;
+}
