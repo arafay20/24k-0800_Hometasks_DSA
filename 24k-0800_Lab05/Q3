@@ -1,0 +1,76 @@
+#include<iostream>
+using namespace std;
+
+void displayarray(int arr[7][7]) {
+    for(int i = 0; i < 7; i++) {
+        for(int j = 0; j < 7; j++) {
+            cout << arr[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+bool issafe(int arr[7][7], int x, int y, int n) {
+    if ((x>=0) && (y >= 0) && x < n && y < n && arr[x][y] == 1) {
+        return true;
+    }
+    return false;
+}
+
+bool childtoicecreamshop(int arr[7][7], int x, int y, int n, int solarr[7][7]) {
+    if ((x == n-1) && (y == n-1)) {  
+        solarr[x][y] = 1;
+        return true;
+    }
+
+    if (issafe(arr, x, y, n) && solarr[x][y] ==0) {
+        solarr[x][y] = 1;
+
+        if (childtoicecreamshop(arr, x+1, y, n, solarr)) {
+            return true;
+        }
+
+      
+        if (childtoicecreamshop(arr, x, y+1, n, solarr)) {
+            return true;
+        }
+        
+        if(childtoicecreamshop(arr, x-1, y, n, solarr)){
+        	return true;
+		}
+		
+		if(childtoicecreamshop(arr, x, y-1, n, solarr)){
+			return true;
+		}
+
+        solarr[x][y] = 0;
+        return false;
+    }
+
+    return false;
+}
+
+int main() {
+    int arr1[7][7];
+
+    cout << "Enter elements for the maze :" << endl;
+    for(int i = 0; i < 7; i++) {
+        for(int j = 0; j < 7; j++) {
+            cout << "Enter element [" << i+1 << "][" << j+1 << "]: ";
+            cin >> arr1[i][j];
+        }
+    }
+
+    int solarr[7][7] = {0}; 
+
+    bool reached = childtoicecreamshop(arr1, 0, 0, 7	, solarr);
+
+    if (reached) {
+        cout << "Path found:" << endl;
+        displayarray(solarr);
+    } else {
+        cout << "No path exists for the lion to reach the meat" << endl;
+    }
+
+    return 0;
+}
