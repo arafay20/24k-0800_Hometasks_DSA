@@ -1,0 +1,82 @@
+#include<iostream>
+using namespace std;
+
+
+void printBoard(char** board, int n) {
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            cout << board[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << endl;
+}
+
+
+bool issafe(char **board, int row, int col, int n) {
+    
+    for(int i = 0; i < row; i++) {
+        if(board[i][col] == 'Q') return false;
+    }
+
+     for(int i = row, j = col; i >= 0 && j >= 0; i--, j--) {
+        if(board[i][j] == 'Q') return false;
+    }
+
+   
+    for(int i = row, j = col; i >= 0 && j < n; i--, j++) {
+        if(board[i][j] == 'Q') return false;
+    }
+
+    return true;
+}
+
+
+void nqueens(char** board, int row, int n, int &solutionCount, bool &printedOne) {
+    if(row == n) {
+        solutionCount++;
+        if(!printedOne) {
+            cout << "One valid configuration:" << endl;
+            printBoard(board, n);
+            printedOne = true;
+        }
+        return;
+    }
+
+    for(int col = 0; col < n; col++) {
+        if(issafe(board, row, col, n)) {
+            board[row][col] = 'Q';
+            nqueens(board, row+1, n, solutionCount, printedOne);
+            board[row][col] = '.'; 
+        }
+    }
+}
+
+int main () {
+    int n;
+    cout << "Enter the value of N: ";
+    cin >> n;
+
+    char** board = new char*[n];
+    for(int i = 0; i < n; i++) {
+        board[i] = new char[n];
+        for(int j = 0; j < n; j++) {
+            board[i][j] = '.';
+        }
+    }
+
+    int solutionCount = 0;
+    bool printedOne = false;
+
+    nqueens(board, 0, n, solutionCount, printedOne);
+
+    cout << "Total number of distinct solutions for " << n << "-Queens: " << solutionCount << endl;
+
+   
+    for(int i = 0; i < n; i++) {
+        delete[] board[i];
+    }
+    delete[] board;
+
+    return 0;
+}
