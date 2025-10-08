@@ -1,0 +1,44 @@
+//Shell Sort is more efficient than Insertion Sort because it first compares and moves elements that are far apart, quickly reducing large disorder.
+// By the time the gap becomes 1, the array is nearly sorted, so the final insertion pass is much faster
+// This reduces the total number of comparisons and shifts, making Shell Sort faster for moderately sized, unsorted data.
+
+#include<iostream>
+
+using namespace std;
+
+void display(int book[], int n) {
+	
+	for(int i = 0; i<n; i ++){
+		cout << book[i] << " ";
+	}
+	
+	cout <<  endl;
+}
+
+void shellsort(int book[], int n){
+	
+	for(int gap =n/2 ; gap >0 ; gap/=2){
+		
+		 	for(int j = gap; j <n ;j++){
+		 		int temp = book[j];
+		 		int res = j;
+		 		
+		 		while(res>=gap && book[res-gap] > temp){
+		 			book[res] =book[res-gap];
+		 			res= res-gap;	
+				 }
+				 
+				 book[res] = temp;
+			 }
+			 
+			 display(book, n);
+	}
+}
+
+int main () {
+	
+	int book[] = {205,102,310,450,120,90};
+	
+	shellsort(book, sizeof(book)/sizeof(book[0]));
+	return 0;
+}
