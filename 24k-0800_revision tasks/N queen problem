@@ -1,0 +1,108 @@
+#include<iostream>
+
+using namespace std;
+
+
+bool issafe(char **board, int row, int col,int n){
+	
+	
+	for(int i = 0 ; i < n ; i++){
+		
+		if(board[row][i] == 'Q'){
+			return false;
+		}
+	}
+	
+	for(int i = 0 ; i< row ; i++){
+		
+		if(board[i][col] == 'Q'){
+			return false;
+		}
+	}
+	
+	for(int i = row-1,j = col-1 ; i >= 0 &&j >=0 ; i--, j--){
+		
+		if(board[i][j] == 'Q'){
+			return false;
+		}
+	}
+	
+	for(int i = row-1, j = col+1 ; i >= 0 && j <n ; i--, j++){
+	
+		if(board[i][j] == 'Q'){
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+void display(char **board, int n) {
+	
+	for(int i = 0;i<n ;i ++){
+		
+		for(int j= 0 ; j < n ; j++){
+			
+			cout << board[i][j] << " " ;
+		}
+		cout << endl;
+	}
+	
+	cout << "-----------" << endl;
+}
+
+void findnqueens(char **board, int row, int n, int &count){
+	
+	if(row == n){
+		count++;
+		display(board, n);
+		return;
+	}
+	
+	
+	for(int i = 0 ; i < n ; i++){
+		
+		if(issafe(board, row , i, n)){
+			
+			board[row][i] = 'Q';
+			
+			findnqueens(board, row +1, n, count);
+			
+			board[row][i] = '.';
+		}
+	}
+}
+
+int main (){
+	
+	int n;
+	
+	cout << " enter the dimension of the board : ";
+	
+	cin >>  n;
+	
+	char **board;
+	
+	board = new char*[n];
+	
+	for(int i = 0; i < n ; i++){
+		board[i] = new char[n];
+	}
+	
+	for(int i = 0 ; i< n ;i++){
+		
+		for(int j = 0 ; j < n ; j++){
+			
+			board[i][j] = '.';
+		}
+	}
+	int count  = 0;
+	findnqueens(board, 0, n, count);
+	
+	cout << "total number of paths found are " << count << endl;
+	
+	return 0;
+}
+
+
+
