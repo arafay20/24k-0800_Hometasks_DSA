@@ -1,0 +1,42 @@
+// Shell Sort is chosen because it sorts faster than Bubble Sort by moving items long distances early, reducing total swaps and comparisons
+//If data is nearly sorted, Shell Sort’s performance approaches O(n), while Bubble Sort would still take O(n²) time because it keeps checking every adjacent pair repeatedly.
+#include<iostream>
+
+using namespace std;
+
+void display(int luggage[], int n) {
+	
+	for(int i = 0; i<n; i ++){
+		cout << luggage[i] << " ";
+	}
+	
+	cout <<  endl;
+}
+
+void shellsort(int luggage[], int n){
+	
+	for(int gap =n/2 ; gap >0 ; gap/=2){
+		
+		 	for(int j = gap; j <n ;j++){
+		 		int temp = luggage[j];
+		 		int res = j;
+		 		
+		 		while(res>=gap && luggage[res-gap] > temp){
+		 			luggage[res] =luggage[res-gap];
+		 			res= res-gap;	
+				 }
+				 
+				 luggage[res] = temp;
+			 }
+			 
+			 display(luggage, n);
+	}
+}
+
+int main () {
+	
+	int luggage[] = {32,25,40,12,18,50,28};
+	
+	shellsort(luggage, sizeof(luggage)/sizeof(luggage[0]));
+	return 0;
+}
