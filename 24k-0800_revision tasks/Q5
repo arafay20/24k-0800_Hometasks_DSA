@@ -1,0 +1,114 @@
+#include <iostream>
+
+using namespace std;
+
+#define N 5
+
+void display(int **solarr, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            cout << solarr[i][j] << " ";
+        }
+        cout << endl;
+    }
+    
+    cout <<  endl;
+}
+
+bool issafe(int **arr,int x,int y){
+	
+	if( x >=0 && y >=0 && x < N && y < N && arr[x][y] ==1){
+		return true;
+	}
+	
+	return false;
+}
+
+void findpath(int **arr, int x, int y, int destx, int desty, int **solarr, int&found){
+	
+	if(x == destx && y == desty && (arr[x][y]==1)){
+		solarr[x][y] = 1;
+		found+=1;
+		display(solarr, 5);
+		return;
+	}
+	
+	
+	if(issafe(arr, x, y) && solarr[x][y] == 0){
+		
+		solarr[x][y] = 1;
+		
+		findpath(arr,x,y+1,destx,desty, solarr, found);
+		findpath(arr,x+1,y,destx,desty, solarr, found);
+		findpath(arr,x,y-1,destx,desty, solarr, found);
+		findpath(arr,x-1,y,destx,desty, solarr, found);
+		solarr[x][y] = 0;
+	}
+}
+
+
+void showintersection(int **rabsol, int **catsol){
+	
+	for(int i = 0 ; i< N ; i++){
+		for (int j = 0 ; j < N ; j++){
+			if(rabsol[i][j] == 1 && catsol[i][j] == 1){
+				
+				cout << "intersection at (" << i << "," << j << 	 " ) found !" << endl;
+				return;
+				
+			}
+		}
+	}
+	
+	cout << "no intersecting point found " <<  endl;
+	
+	
+}
+int main () {
+	int n;
+    cout << "Enter maze length: ";
+    cin >> n;
+
+    int **arr = new int*[n];
+    int **solarr = new int*[n];
+    int **solarr2 = new int*[n];
+    for (int i = 0; i < n; i++) {
+        arr[i] = new int[n];
+        solarr[i] = new int[n];
+        solarr2[i] = new int[n];
+    }
+
+    cout << "Enter maze elements (1 = open, 0 = blocked):" << endl;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+        	cout << " enter element[" << i << "][" << j << "] :" ;
+            cin >> arr[i][j];
+            solarr[i][j] = 0;
+            solarr2[i][j] = 0;
+        }
+    }
+    
+    
+    int rabbitfound = 0;
+    findpath(arr, 0,0,2,2,solarr, rabbitfound);
+    
+    cout << rabbitfound << "possible paths for rabbit" <<  endl;
+    int catfound =0;
+    findpath(arr, 4,4,2,2,solarr2, catfound);
+    cout << catfound << " possible paths for cat" <<  endl;
+    
+    if(rabbitfound> 0 && catfound >0){
+    	showintersection(solarr, solarr2);
+	}
+     
+    for (int i = 0; i < n; i++) {
+        delete[] arr[i];
+        delete[] solarr[i];
+        delete[] solarr2[i];
+    }
+    delete[] arr;
+    delete[] solarr;
+    delete[] solarr2;
+
+	return 0;
+}
