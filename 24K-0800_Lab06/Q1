@@ -1,0 +1,66 @@
+#include<iostream>
+using namespace std;
+
+class callhistory {
+	
+	int top;
+	string arr[10];
+	public :
+		callhistory(){
+			for(int i = 0 ; i < 10 ; i++){
+				arr[i] = "0";
+			}
+			top  = -1;
+		}
+		
+		bool isempty(){
+			if(top < 0){
+				return true;
+			}else return false;
+		}
+		
+		void push(string call){
+			if(isempty()){
+				arr[++top] = call;
+			}else {
+				arr[++top] = call;
+			}
+		}
+		
+		void peek(){
+			if(!isempty()){
+				cout << "recent call : " << arr[top] <<endl;
+			}else {
+				cout << "no recent calls" << endl;
+			}
+		}
+		
+		void pop(){
+			
+			if(isempty()){
+				cout << "call history already cleared" << endl;
+				return;
+			}else {
+				arr[top] = "0";
+				top--;
+				cout << "recent call deleted" <<  endl;
+				
+			}
+		}
+		
+		
+};
+int main () {
+	callhistory c1;
+	
+	c1.push("rafay");
+	c1.push("talha");
+	c1.push("irfan");
+	
+	c1.peek();
+	c1.pop();
+	
+	c1.peek();	
+		
+	return 0;
+}
