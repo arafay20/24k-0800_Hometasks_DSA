@@ -1,66 +1,88 @@
 #include<iostream>
+#include<string>
 using namespace std;
 
-class callhistory {
-	
-	int top;
-	string arr[10];
-	public :
-		callhistory(){
-			for(int i = 0 ; i < 10 ; i++){
-				arr[i] = "0";
-			}
-			top  = -1;
-		}
-		
-		bool isempty(){
-			if(top < 0){
-				return true;
-			}else return false;
-		}
-		
-		void push(string call){
-			if(isempty()){
-				arr[++top] = call;
-			}else {
-				arr[++top] = call;
-			}
-		}
-		
-		void peek(){
-			if(!isempty()){
-				cout << "recent call : " << arr[top] <<endl;
-			}else {
-				cout << "no recent calls" << endl;
-			}
-		}
-		
-		void pop(){
-			
-			if(isempty()){
-				cout << "call history already cleared" << endl;
-				return;
-			}else {
-				arr[top] = "0";
-				top--;
-				cout << "recent call deleted" <<  endl;
-				
-			}
-		}
-		
-		
+struct Call {
+    string name;
+    string number;
+    int duration;
 };
-int main () {
-	callhistory c1;
-	
-	c1.push("rafay");
-	c1.push("talha");
-	c1.push("irfan");
-	
-	c1.peek();
-	c1.pop();
-	
-	c1.peek();	
-		
-	return 0;
+
+class CallHistory {
+    int top;
+    Call arr[10];
+
+public:
+    CallHistory() {
+        top = -1;
+    }
+
+    bool isempty() {
+        return top == -1;
+    }
+
+    bool isfull() {
+        return top == 9;
+    }
+
+    void push(const Call& call) {
+        if (isfull()) {
+            cout << "Call history is full. Cannot add new call." << endl;
+            return;
+        }
+        arr[++top] = call;
+        cout << "Call added: " << call.name << " (" << call.number << "), " << call.duration << " sec" << endl;
+        display();
+    }
+
+    void pop() {
+        if (isempty()) {
+            cout << "Call history already empty." << endl;
+            return;
+        }
+        cout << "Removed call: " << arr[top].name << " (" << arr[top].number << ")" << endl;
+        top--;
+        display();
+    }
+
+    void peek() {
+        if (isempty()) {
+            cout << "No recent calls." << endl;
+        } else {
+            cout << "Most recent call:" << endl;
+            cout << "Name: " << arr[top].name << endl;
+            cout << "Number: " << arr[top].number << endl;
+            cout << "Duration: " << arr[top].duration << " sec" << endl;
+        }
+    }
+
+    void display() {
+        if (isempty()) {
+            cout << "Call history is empty." << endl;
+            return;
+        }
+        cout << endl << "Current Call Log:" << endl;
+        for (int i = top; i >= 0; i--) {
+            cout << i + 1 << ". " << arr[i].name << " (" << arr[i].number << ") - " << arr[i].duration << " sec" << endl;
+        }
+        cout << endl;
+    }
+};
+
+int main() {
+    CallHistory c1;
+
+    Call c2 = {"Rafay", "0312-1234567", 120};
+    Call c3 = {"Talha", "0345-9876543", 90};
+    Call c4 = {"Irfan", "0300-5432198", 60};
+
+    c1.push(c2);
+    c1.push(c3);
+    c1.push(c4);
+
+    c1.peek();
+    c1.pop();
+    c1.peek();
+
+    return 0;
 }
