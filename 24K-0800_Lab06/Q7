@@ -1,0 +1,105 @@
+#include<iostream>
+
+using namespace std;
+
+#define max 10
+class que {
+	
+	string queue[max];
+	int front;
+	int rear;
+	
+	public :
+		que() {
+			front = -1;
+			rear = -1;
+			
+		}
+		
+		void addpatron(string name) {
+			
+			if(rear== max-1){
+				cout << "Queue is cuurently full. please wait!" << endl;
+				return;
+			}
+			if(front == -1){
+				front = 0;
+			}
+			queue[++rear] = name;
+			return;	
+		}
+		
+		void removepatron(){
+			
+			if(front == -1){
+				cout << "Queue is empty" << endl;
+				return;
+			}
+			
+			cout << "transaction complete of patron " << queue[0] << endl;
+			
+			for(int i = 0 ; i < rear ; i++){
+				queue[i] = queue[i+1];
+			}
+			rear--;
+			
+			if(rear<0){
+				front = -1;
+			}
+		}
+		
+		void display() {
+			
+			cout << "diplaying queue :" << endl;
+			
+			for(int i = 0 ; i <= rear ; i++){
+				
+				cout << " -- " << queue[i] << " -- " ;
+			}
+		}
+};
+int main () {
+	
+	
+	que q;
+    int choice;
+    string name;
+
+    cout << "====== Library Patron Queue Simulation ======\n";
+
+    do {
+        cout << "\nMenu:\n";
+        cout << "1. Add patron to queue\n";
+        cout << "2. Serve (remove) a patron\n";
+        cout << "3. Display current queue\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter patron name: ";
+                cin >> name;
+                q.addpatron(name);
+                break;
+
+            case 2:
+                q.removepatron();
+                break;
+
+            case 3:
+                q.display();
+                break;
+
+            case 4:
+                cout << "Exiting program... Goodbye!\n";
+                break;
+
+            default:
+                cout << "Invalid choice. Try again.\n";
+        }
+    } while (choice != 4);
+
+
+	return 0;
+}
