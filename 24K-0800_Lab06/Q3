@@ -1,0 +1,123 @@
+#include<iostream>
+
+using namespace std;
+
+class stack {
+	
+	string arr[100];
+	int top;
+	
+	public :
+		stack() : top(-1){
+			
+		}
+		
+		void push(string url){
+			if(top == 100-1){
+				 	return;
+			}else {
+				
+				arr[++top] = url;
+			}
+		}
+		
+		string pop(){
+			
+			if(top < 0) {
+				return "";
+				
+			}else{
+				
+				return arr[top--];
+			}	
+		}
+		
+		string peek(){
+			if(top < 0 ) {
+				return "";
+			}else {
+				return arr[top];
+			}
+		}
+		
+};
+
+class node {
+	
+	public :
+	node *next;
+	string url;
+	node(string u) : url(u), next(nullptr){
+		
+	}
+	
+};
+
+
+
+class linkedlist {
+	
+	node *head;
+	stack s1;
+	public :
+		linkedlist() : head(nullptr) {
+		}
+		
+		void addtofront(string obj){
+			node *temp = new node(obj);
+			temp->next = head;
+			head = temp;
+			s1.push(obj);
+		}
+		
+		
+		void removefromfirst(){
+			if(head == nullptr) 
+			return;
+			node *temp = head;
+			head = head->next;
+			temp->next = nullptr;
+			delete temp;
+			s1.pop();
+		}
+		
+		void display(){
+			
+			node *temp = head;
+			
+		cout << "Browsing History (most recent first): ";
+        while (temp != nullptr) {
+            cout << temp->url;
+            if (temp->next) cout << " -> ";
+            temp = temp->next;
+        }
+        cout << endl;
+		}
+	
+	
+};
+
+
+
+int main () {
+	
+	linkedlist l1;
+	
+	l1.addtofront("google");
+	l1.addtofront("Facebook");
+	l1.addtofront("twitter");
+	l1.addtofront("linkedin");
+	l1.addtofront("instagram");
+	
+	
+	l1.display();
+	
+	for(int i = 0 ; i < 2 ; i++){ //the user presses back 2 times thats why the loop runs twice as given in question
+		l1.removefromfirst();
+	}
+	
+	l1.display();
+	
+	
+	return 0;
+}
