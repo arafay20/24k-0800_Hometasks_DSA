@@ -1,0 +1,102 @@
+#include<iostream>
+
+using namespace std;
+
+struct order {
+	
+	string name;
+	int qauntity;
+};
+
+class stack {
+	
+	order arr[100];
+	int top;
+	
+	public :
+		stack() : top(-1){
+			
+		}
+		
+		void push(string n,int qaunt){
+			if(top == 100-1){
+				
+				cout << "Stack overflow " << endl;
+				 	return;
+			}else {
+				top++;
+				arr[top].name = n;
+				arr[top].qauntity = qaunt;
+			}
+		}
+		
+		order removeorder(int qauntity){
+			
+			if(top < 0) {
+				
+				cout << "stack underflow " << endl;
+				
+				return {"", 0};
+				
+			}else{
+				if(arr[top].qauntity == qauntity){
+					
+					return arr[top--];
+				}else if(arr[top].qauntity > qauntity){
+					arr[top].qauntity-= qauntity;
+					return {arr[top].name,arr[top].qauntity};
+				}else {
+					cout << "insufficient qauntity" << endl;
+					return {"",0} ;
+				}
+			}	
+		}
+		
+	    order peek() {
+        if (top < 0) {
+            cout << "Stack is empty\n";
+            return {"", 0};
+        } else {
+            return arr[top];
+        }
+    }
+		
+		void printorders(){
+			
+			cout << "Displaying orders :" <<endl;
+			
+			for(int i = top ; i >=0 ; i-- ){
+				
+				cout << arr[i].name << " - " << arr[i].qauntity << endl;
+			}
+		}
+};
+
+
+
+
+int main () {
+	stack s1;
+
+    s1.push("Chicken burger", 4);
+    s1.push("chicken parmesan", 2);
+    s1.push("tarragon steak", 4);
+
+    cout << "Initial Orders:" << endl;
+    s1.printorders();
+ 
+    cout << "\nTop order is: " << s1.peek().name << " - " << s1.peek().qauntity << endl;
+
+
+    order removed = s1.removeorder(4);
+    if (removed.name != "")
+        cout << "Removed: " << removed.name << " (" << removed.qauntity << ")" << endl;
+
+    s1.printorders();
+
+    cout << "\nNow top order is: " << s1.peek().name << " - " << s1.peek().qauntity << endl;
+
+	
+	
+	return 0;
+}
