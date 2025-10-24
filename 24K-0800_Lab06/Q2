@@ -1,0 +1,78 @@
+#include <iostream>
+#include <cctype>  
+using namespace std;
+
+class Stack {
+    double arr[100];
+    int top;
+
+public:
+    Stack() {
+        top = -1;
+    }
+
+    void push(double val) {
+        if (top == 99) {
+            cout << "Stack overflow!" << endl;
+            return;
+        }
+        arr[++top] = val;
+    }
+
+    double pop() {
+        if (top == -1) {
+            cout << "Stack underflow!" << endl;
+            return 0;
+        }
+        return arr[top--];
+    }
+
+    bool empty() {
+        return top == -1;
+    }
+};
+
+
+double evaluatePostfix(string postfix) {
+    Stack s;
+    char ch;
+
+    for (int i = 0; i < postfix.length(); i++) {
+        ch = postfix[i];
+
+        if (isdigit(ch)) {
+            s.push(ch - '0');  
+        } else {
+            double val1 = s.pop();
+            double val2 = s.pop();
+
+            switch (ch) {
+                case '+':
+                    s.push(val2 + val1);
+                    break;
+                case '-':
+                    s.push(val2 - val1);
+                    break;
+                case '*':
+                    s.push(val2 * val1);
+                    break;
+                case '/':
+                    s.push(val2 / val1);
+                    break;
+                default:
+                    cout << "Invalid operator: " << ch << endl;
+            }
+        }
+    }
+
+    return s.pop();
+}
+
+int main() {
+    string postfix = "23*54*+9-"; 
+
+    double result = evaluatePostfix(postfix);
+    cout << "Final evaluated result: " << result << endl;
+
+    return 0;
+}
