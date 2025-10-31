@@ -1,0 +1,84 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+void swap(int &a, int &b) {
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+int pivotFirst(int arr[], int low, int high) {
+    return low;
+}
+
+int pivotRandom(int arr[], int low, int high) {
+    return low + rand() % (high - low + 1);
+}
+
+int pivotMiddle(int arr[], int low, int high) {
+    return (low + high) / 2;
+}
+
+int pivotMedianOfThree(int arr[], int low, int high) {
+    int mid = (low + high) / 2;
+    int a = arr[low], b = arr[mid], c = arr[high];
+    if ((a <= b && b <= c) || (c <= b && b <= a)) return mid;
+    else if ((b <= a && a <= c) || (c <= a && a <= b)) return low;
+    else return high;
+}
+
+int partition(int arr[], int low, int high, int (*pivotFunc)(int[], int, int), long long &comparisons) {
+    int pivotIndex = pivotFunc(arr, low, high);
+    swap(arr[low], arr[pivotIndex]);
+    int pivot = arr[low];
+    int i = low + 1;
+    for (int j = low + 1; j <= high; j++) {
+        comparisons++;
+        if (arr[j] < pivot) {
+            swap(arr[i], arr[j]);
+            i++;
+        }
+    }
+    swap(arr[low], arr[i - 1]);
+    return i - 1;
+}
+
+void quickSort(int arr[], int low, int high, int (*pivotFunc)(int[], int, int), long long &comparisons) {
+    if (low < high) {
+        int p = partition(arr, low, high, pivotFunc, comparisons);
+        quickSort(arr, low, p - 1, pivotFunc, comparisons);
+        quickSort(arr, p + 1, high, pivotFunc, comparisons);
+    }
+}
+
+int main() {
+    srand(time(0));
+    const int SIZE = 10;
+    int data[SIZE] = {25, 17, 31, 13, 2, 40, 28, 19, 8, 50};
+
+    long long compFirst = 0, compRandom = 0, compMiddle = 0, compMedian = 0;
+    int arr1[SIZE], arr2[SIZE], arr3[SIZE], arr4[SIZE];
+    for (int i = 0; i < SIZE; i++) {
+        arr1[i] = arr2[i] = arr3[i] = arr4[i] = data[i];
+    }
+
+    quickSort(arr1, 0, SIZE - 1, pivotFirst, compFirst);
+    quickSort(arr2, 0, SIZE - 1, pivotRandom, compRandom);
+    quickSort(arr3, 0, SIZE - 1, pivotMiddle, compMiddle);
+    quickSort(arr4, 0, SIZE - 1, pivotMedianOfThree, compMedian);
+
+    cout << "Number of comparisons:\n";
+    cout << "1. First element pivot:   " << compFirst << endl;
+    cout << "2. Random element pivot:  " << compRandom << endl;
+    cout << "3. Middle element pivot:  " << compMiddle << endl;
+    cout << "4. Median of three pivot: " << compMedian << endl;
+
+    cout << "\nSorted array (Median of three method): ";
+    for (int i = 0; i < SIZE; i++)
+        cout << arr4[i] << " ";
+    cout << endl;
+
+    return 0;
+}
