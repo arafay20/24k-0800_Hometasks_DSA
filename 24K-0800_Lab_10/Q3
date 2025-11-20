@@ -1,0 +1,117 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+class Task {
+public:
+    string name;
+    int priority;
+
+    Task() {
+        name = "";
+        priority = -1;
+    }
+
+    Task(string n, int p) {
+        name = n;
+        priority = p;
+    }
+};
+
+class MaxHeap {
+private:
+    Task heap[100];
+    int size;
+
+    void bubbleUp(int index) {
+        while (index > 0) {
+            int parent = (index - 1) / 2;
+            if (heap[index].priority > heap[parent].priority) {
+                swap(heap[index], heap[parent]);
+                index = parent;
+            } else {
+                break;
+            }
+        }
+    }
+
+    void heapifyDown(int index) {
+        while (true) {
+            int left = 2 * index + 1;
+            int right = 2 * index + 2;
+            int largest = index;
+
+            if (left < size && heap[left].priority > heap[largest].priority)
+                largest = left;
+            if (right < size && heap[right].priority > heap[largest].priority)
+                largest = right;
+
+            if (largest == index)
+                break;
+
+            swap(heap[index], heap[largest]);
+            index = largest;
+        }
+    }
+
+public:
+    MaxHeap() {
+        size = 0;
+    }
+
+    void insert(Task t) {
+        if (size >= 100) {
+            cout << "Heap is full!" << endl;
+            return;
+        }
+
+        heap[size] = t;
+        bubbleUp(size);
+        size++;
+    }
+
+    Task remove() {
+        if (size <= 0) {
+            cout << "Heap is empty!" << endl;
+            return Task();
+        }
+
+        Task maxTask = heap[0];
+        heap[0] = heap[size - 1];
+        size--;
+        heapifyDown(0);
+
+        return maxTask;
+    }
+
+    void display() {
+        cout << "Heap: ";
+        for (int i = 0; i < size; i++)
+            cout << heap[i].name << "(" << heap[i].priority << ") ";
+        cout << endl;
+    }
+};
+
+int main() {
+    MaxHeap tasks;
+
+    tasks.insert(Task("A", 5));
+    tasks.insert(Task("B", 3));
+    tasks.insert(Task("C", 8));
+
+    cout << "After inserting tasks A, B, C:" << endl;
+    tasks.display();
+
+    Task t = tasks.remove();
+    cout << endl <<"Removed task with highest priority: " << t.name << "(" << t.priority << ")" << endl;
+
+    cout << "Heap after removal:" << endl;
+    tasks.display();
+
+    tasks.insert(Task("D", 6));
+    cout << endl << "After inserting task D(6):" << endl;
+    tasks.display();
+
+    return 0;
+}
