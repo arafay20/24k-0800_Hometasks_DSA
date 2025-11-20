@@ -2,7 +2,7 @@
 
 using namespace std;
 
-class minheap {
+class maxheap {
 	
 	int heap[100];
 	int size;
@@ -42,7 +42,7 @@ class minheap {
 	}
 	public :
 		
-	minheap() {
+	maxheap() {
         size = 0;
     }
 
@@ -86,7 +86,7 @@ class minheap {
 		
 };
 int main () {
-	minheap h;
+	maxheap h;
 	
 	h.insert(9);
     h.insert(7);
