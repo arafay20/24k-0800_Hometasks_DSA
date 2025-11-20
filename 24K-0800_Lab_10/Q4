@@ -1,0 +1,109 @@
+#include<iostream>
+
+using namespace std;
+
+class minheap {
+	
+	int heap[100];
+	int size;
+	
+	void bubbleUp(int index) {
+        while (index > 0) {
+            int parent = (index - 1) / 2;
+
+            if (heap[index] < heap[parent]) {
+                swap(heap[index], heap[parent]);
+                index = parent;
+            } else {
+                break;
+            }
+        }
+    }
+    
+    void heapifydown(int index){
+    	
+    	while(true){
+    		
+    		int left = 2*index +1;
+    		int right = 2*index + 2;
+    		int largest = index;
+    		
+    		  if (left < size && heap[left] < heap[largest])
+                largest = left;
+            if (right < size && heap[right] < heap[largest])
+                largest = right;
+
+            if (largest == index)
+                break;
+
+            swap(heap[index], heap[largest]);
+            index = largest;
+		}
+	}
+	public :
+		
+	minheap() {
+        size = 0;
+    }
+
+    void insert(int value) {
+        if (size >= 100) {
+            cout << "Heap is full!" << endl;
+            return;
+        }
+
+        heap[size] = value; 
+        bubbleUp(size);     
+        size++;
+    }
+
+    void display() {
+        cout << "Heap array: ";
+        for (int i = 0; i < size; i++) {
+            cout << heap[i] << " ";
+        }
+        cout << endl;
+    }
+    
+    int remove(){
+    	
+    	if(size < 0){
+    		
+    		cout << "heap is empty" << endl;
+    		return 0;
+		}
+		
+		int maxvalue = heap[0];
+		heap[0] = heap[size-1];
+		size--;
+		
+		heapifydown(0);
+		
+		return maxvalue;
+		
+		
+	}
+		
+};
+int main () {
+	minheap h;
+	
+	h.insert(100);
+    h.insert(50);
+    h.insert(75);
+    h.insert(60);
+
+    h.display();
+
+    h.insert(55);
+
+    cout << "After inserting 55 : " << endl;
+    h.display();
+    
+    cout << "order with highest priority " << h.remove() << " executed " << endl;   
+    
+    h.display();
+	
+	
+	return 0;
+}
